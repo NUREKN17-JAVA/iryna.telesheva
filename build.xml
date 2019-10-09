@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Oct 9, 2019 11:16:13 PM                                                        
+
+     project    
+     description
+                   
+     irina                                                                
+     ====================================================================== -->
+<project name="usermanagement" basedir="." default="test">
+    <description>
+            Java Project for the first work in the course
+    </description>
+	
+	<property name="build-dir" value="${basedir}/target"/>
+	<property name="classes-dir" value="${basedir}/classes"/>
+	<property name="test-java-dir" value="${basedir}/src/test/java"/>
+	<property name="main-java-dir" value="${basedir}/src/main/java"/>
+	
+	<!-- ================================= 
+	          target: main compile            
+	         ================================= -->
+	
+	  <target name="compile" depends="init">
+	    	<javac srcdir="${main-java-dir}" destdir="${build-dir}"/>
+	    </target>
+
+    <!-- ================================= 
+          target: test             
+         ================================= -->
+    <target name="test" depends="test-compile" description="description">
+        <junit>
+        	<classpath path="${build-dir}">
+        	            </classpath>
+        	            <formatter type="plain"/>
+        	<test name="ua.nure.kn.telesheva.usermanagement.UserTest"/>
+        </junit>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: depends                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test-compile" depends="init">
+    	<javac srcdir="${test-java-dir}" destdir="${build-dir}"/>
+    </target>
+	
+	<target name="init" depends="clean">
+		<mkdir dir="${build-dir}"/>
+		<mkdir dir="${classess-dir}"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build-dir}"/>
+	</target>
+
+</project>
