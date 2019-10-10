@@ -1,5 +1,7 @@
 package ua.nure.kn.telesheva.db;
 
-public interface ConnectionFactory {
+import java.sql.Connection;
 
+public interface ConnectionFactory {
+	Connection getConnection() throws DatabaseException;
 }

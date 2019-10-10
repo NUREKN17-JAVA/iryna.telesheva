@@ -3,6 +3,7 @@ package ua.nure.kn.telesheva.db;
 import java.util.Calendar;
 
 import org.dbunit.DatabaseTestCase;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
@@ -12,6 +13,7 @@ import ua.nure.kn.telesheva.db.HsqldbUserDao;
 public class HsqldbUserDaoTest extends DatabaseTestCase {
 	
 	private HsqldbUserDao dao; //этот объект будет поддерживать соединение с БД
+	private ConnectionFactory connectionFactory;
 	private static final int DAY_OF_BIRTH = 1;
 	private static final int MONTH = 1;
 	private static final int YEAR = 2010;
@@ -36,6 +38,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		dao = new HsqldbUserDao(connectionFactory);
 	}
 	
 	protected void tearDown() throws Exception {
@@ -44,8 +47,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		connectionFactory = new ConnectionFactoryImpl();
+		return new DatabaseConnection(connectionFactory.getConnection());
 	}
 
 	@Override

@@ -7,4 +7,8 @@ public class DatabaseException extends Exception {
 		super(e);
 	}
 
+	public DatabaseException(String string) {
+		super(string);
+	}
+
 }
