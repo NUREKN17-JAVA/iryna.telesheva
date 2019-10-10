@@ -1,11 +1,14 @@
 package ua.nure.kn.telesheva.db;
 
 import java.util.Calendar;
+import java.util.Collection;
 
 import org.dbunit.DatabaseTestCase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
+
 
 import ua.nure.kn.telesheva.usermanagement.User;
 import ua.nure.kn.telesheva.db.HsqldbUserDao;
@@ -36,6 +39,12 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		assertEquals(calendar.getTime(), userToCheck.getDateOfBirth());
 	}
 	
+	public void testFindAll() throws DatabaseException {
+		Collection<User> items = dao.findAll();
+		assertNotNull(items);
+		assertEquals(2,  items.size());
+	}
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		dao = new HsqldbUserDao(connectionFactory);
@@ -53,8 +62,10 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	@Override
 	protected IDataSet getDataSet() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		IDataSet dataSet = 
+				new XmlDataSet(getClass().getClassLoader()
+						.getResourceAsStream("usersDataSet.xml"));
+		return dataSet;
 	}
 
 }
