@@ -30,8 +30,11 @@
          ================================= -->
     <target name="test" depends="test-compile" description="description">
         <junit>
-        	    <classpath>
-        	     <pathelement location="${build-dir}"/>
+        	<classpath>
+        		<pathelement location="${build-dir}" />
+        		  <fileset dir="${lib-dir}">
+        		        <include name="**/junit3.8.1.jar" />
+        		  </fileset>
         		</classpath>
         	    <formatter type="plain"/>
         	<test name="ua.nure.kn.telesheva.usermanagement.UserTest"/>
