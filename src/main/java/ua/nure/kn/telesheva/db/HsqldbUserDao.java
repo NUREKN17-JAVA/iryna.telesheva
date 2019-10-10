@@ -83,11 +83,11 @@ public class HsqldbUserDao implements Dao<User> {
 				user.setDateOfBirth(resultSet.getDate(4));
 				result.add(user);
 			}
+			//close resources!!!
 			
 			return result;
 		} catch(SQLException e) {
 			throw new DatabaseException(e);
 		}
 	}
-
 }
