@@ -45,7 +45,7 @@
           target: depends                      
          - - - - - - - - - - - - - - - - - -->
     <target name="test-compile" depends="init">
-    	<javac srcdir="${test-java-dir}" destdir="${build-dir}"/>
+    	<javac srcdir="${test-java-dir}" destdir="${build-dir}" includeantruntime="false"/>
     </target>
 	
 	<target name="init" depends="clean">
