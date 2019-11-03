@@ -2,15 +2,17 @@ package ua.nure.kn.telesheva.db;
 
 import java.util.Collection;
 
+import ua.nure.kn.telesheva.usermanagement.User;
+
 public interface Dao<T> {
 
 	Object result = null;
 
-	T create(T entity) throws DatabaseException;
+	User create(User user) throws DatabaseException;
 	
-	void update(T entity) throws DatabaseException;
+	void update(User user) throws DatabaseException;
 	
-	void delete(T entity) throws DatabaseException;
+	void delete(User user) throws DatabaseException;
 	
 	void find(long id) throws DatabaseException;
 	

@@ -8,7 +8,7 @@ public class DaoFactory {
 	private static final String PASSWORD = "connection.password";
 	private static final String URL = "connection.url";
 	private static final String DRIVER = "connection.driver";
-	private static final String USER_DAO = "dao.UserDao";
+	private static final String USER_DAO = "dao.knure.ctde.usermanagement.db.UserDao";
 
 	private final Properties properties;
 	
@@ -39,8 +39,8 @@ public class DaoFactory {
 	public Dao getUserDao() throws ReflectiveOperationException { 
 		Dao result = null; 
 		try {
-			Class hsqlUserDaoClass = Class.forName(properties.getProperty(USER_DAO));
-			result = (Dao) hsqlUserDaoClass.newInstance();
+			Class clazz = Class.forName(properties.getProperty(USER_DAO));
+			result = (Dao) clazz.newInstance();
 			result.setConnectionFactory(createConnection());
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             throw new ReflectiveOperationException(e);

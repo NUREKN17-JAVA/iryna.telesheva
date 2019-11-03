@@ -11,13 +11,21 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import ua.nure.kn.telesheva.usermanagement.User;
+import ua.nure.kn.telesheva.db.DatabaseException;
 
-public class HsqldbUserDao implements Dao<User> {
+class HsqldbUserDao implements Dao<User> {
 	
 	private static final String SELECT_ALL_QUERY = "SELECT * FROM users";
 	private static final String INSERT_QUERY = "INSERT INTO users(firstname, lastname, dateOfBirth) VALUES (?, ?, ?)";
 	private ConnectionFactory connectionFactory;
+    private final String FIND_BY_ID = "SELECT * FROM USERS WHERE id = ?";
+    private final String DELETE_USER = "DELETE FROM USERS WHERE id = ?";
+    private final String UPDATE_USER
+            = "UPDATE USERS SET firstname = ?, lastname = ?, dateofbirth = ? WHERE id = ?";
 
+	public HsqldbUserDao() {
+	}
+	
 	public HsqldbUserDao(ConnectionFactory connectionFactory) {
 		this.connectionFactory = connectionFactory;
 	}
@@ -52,20 +60,71 @@ public class HsqldbUserDao implements Dao<User> {
 
 	@Override
 	public void update(User entity) throws DatabaseException {
-		// TODO Auto-generated method stub
-		
+	    try {
+            Connection connection = connectionFactory.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER);
+            preparedStatement.setString(1, entity.getFirstName());
+            preparedStatement.setString(2, entity.getLastName());
+            preparedStatement.setDate(3, new Date(entity.getDateOfBirth()
+                                                        .getTime()));
+            preparedStatement.setLong(4, entity.getId());
+
+            int insertedRows = preparedStatement.executeUpdate();
+
+            if (insertedRows != 1) {
+                throw new DatabaseException("Number of inserted rows: " + insertedRows);
+            }
+
+            connection.close();
+            preparedStatement.close();
+        } catch (DatabaseException | SQLException e) {
+            throw new DatabaseException(e.toString());
+        }	
 	}
 
 	@Override
 	public void delete(User entity) throws DatabaseException {
-		// TODO Auto-generated method stub
-		
+		 try {
+	            Connection connection = connectionFactory.getConnection();
+
+	            PreparedStatement statement = connection.prepareStatement(DELETE_USER);
+	            statement.setLong(1, entity.getId());
+
+	            int removedRows = statement.executeUpdate();
+
+	            if (removedRows != 1) {
+	                throw new DatabaseException("Number of removed rows: " + removedRows);
+	            }
+	            connection.close();
+	            statement.close();
+	        } catch (SQLException e) {
+	            throw new DatabaseException(e);
+	        }
 	}
 
 	@Override
-	public void find(long id) throws DatabaseException {
-		// TODO Auto-generated method stub
-		
+	public User find(long id) throws DatabaseException {
+		 User user = null;
+	        try {
+	            Connection connection = connectionFactory.getConnection();
+	            PreparedStatement statement = connection.prepareStatement(FIND_BY_ID);
+	            statement.setLong(1, id);
+	            ResultSet resultSet = statement.executeQuery();
+
+	            if (resultSet.next()) {
+	                user = new User();
+	                user.setId(resultSet.getLong(1));
+	                user.setFirstName(resultSet.getString(2));
+	                user.setLastName(resultSet.getString(3));
+	                user.setDateOfBirth(resultSet.getDate(4));
+	            }
+	            connection.close();
+	            statement.close();
+	            resultSet.close();
+	        } catch (SQLException e) {
+	            throw new DatabaseException(e);
+	        }
+	        return user;
 	}
 
 	@Override
@@ -83,11 +142,23 @@ public class HsqldbUserDao implements Dao<User> {
 				user.setDateOfBirth(resultSet.getDate(4));
 				result.add(user);
 			}
-			//close resources!!!
+			//close resources
+			connection.close();
+			statement.close();
 			
 			return result;
 		} catch(SQLException e) {
 			throw new DatabaseException(e);
 		}
 	}
+	
+	public ConnectionFactory getConnectionFactory() {
+		return connectionFactory;
+	}
+
+	@Override
+	public void setConnectionFactory(ConnectionFactory connectionFactory) {
+		 this.connectionFactory = connectionFactory; 
+	}
+	
 }
