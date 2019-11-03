@@ -6,15 +6,20 @@ import java.sql.SQLException;
 
 public class ConnectionFactoryImpl implements ConnectionFactory {
 
+	private final String user;
+	private final String password;
+	private final String url;
+	private final String driver;
+
+	public ConnectionFactoryImpl(String user, String password, String url, String driver) {
+		this.user = user;
+		this.password = password;
+		this.url = url;
+		this.driver = driver;
+	}
+
 	@Override
 	public Connection getConnection() throws DatabaseException {
-		String driver = "org.hsqldb.jdbcDriver";
-		String url = "jdbc:hsqldb:file:db/usermanagement";
-		String user = "sa";
-		String password = "";
-		
-		//рефлексия
-		
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
