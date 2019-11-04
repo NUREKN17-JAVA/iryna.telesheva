@@ -45,7 +45,7 @@ class HsqldbUserDao implements Dao<User> {
 			CallableStatement callableStatement = connection.prepareCall("call IDENTITY()");
 			//IDENTITY возвращает последний созданный идентификатор
 			ResultSet key = callableStatement.executeQuery();
-			if (key.next()) { //если есть следующая запись в resultset
+			if (key.next()) { 
 				entity.setId(new Long(key.getLong(1)));
 			}
 			key.close();
@@ -103,7 +103,7 @@ class HsqldbUserDao implements Dao<User> {
 	}
 
 	@Override
-	public User find(long id) throws DatabaseException {
+	public User find(Long id) throws DatabaseException {
 		 User user = null;
 	        try {
 	            Connection connection = connectionFactory.getConnection();
