@@ -21,10 +21,17 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	private static final int YEAR = 2010;
 	private static final String LAST_NAME = "Gates";
 	private static final String FIRST_NAME = "Bill";
-	private static final String user = null;
-	private static final String password = null;
-	private static final String url = null;
-	private static final String driver = null;
+	   private static final long ID = 1L;
+	
+    private User createUserWithoutID() {
+        User user = new User(null, FIRST_NAME, LAST_NAME, new Date());
+        return user;
+    }
+
+    private User createUserWithID() {
+        User user = new User(ID, FIRST_NAME, LAST_NAME, new Date());
+        return user;
+    }
 
 	public void testCreate() throws DatabaseException {
 		User user = new User();
@@ -41,6 +48,30 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		assertEquals(LAST_NAME, userToCheck.getLastName());
 		assertEquals(calendar.getTime(), userToCheck.getDateOfBirth());
 	}
+	
+	/*
+	 * public void testFind() throws DataBaseException {
+	 * hsqldbUserDao.create(createUserWithID()); User testUser =
+	 * hsqldbUserDao.find(ID); assertNotNull(testUser);
+	 * assertEquals(testUser.getFirstName(), user.getFirstName());
+	 * assertEquals(testUser.getLastName(), user.getLastName()); }
+	 * 
+	 * public void testDelete() throws DataBaseException { User testUser =
+	 * createUserWithID(); hsqldbUserDao.delete(testUser);
+	 * assertNull(hsqldbUserDao.find(ID)); }
+	 * 
+	 * public void testUpdate() throws DataBaseException { String testFirstName =
+	 * "Sam"; String testLastName = "Smith"; Date testDateOfBirth = new Date(); User
+	 * testUser = new User(1L, testFirstName, testLastName, testDateOfBirth);
+	 * HsqldbUserDao.create(testUser);
+	 * 
+	 * testUser.setFirstName("Sam11");
+	 * 
+	 * HsqldbUserDao.update(testUser); User updatedUser =
+	 * hsqldbUserDao.find(testUser.getId()); assertNotNull(updatedUser);
+	 * assertEquals(testUser.getFirstName(), updatedUser.getFirstName());
+	 * assertEquals(testUser.getLastName(), updatedUser.getLastName()); }
+	 */
 
 	public void testFindAll() throws DatabaseException {
 		Collection<User> items = dao.findAll();
@@ -65,7 +96,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
-		connectionFactory = new ConnectionFactoryImpl(user, password, url, driver);
 		return new DatabaseConnection(connectionFactory.getConnection());
 	}
 

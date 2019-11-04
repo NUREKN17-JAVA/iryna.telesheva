@@ -14,7 +14,7 @@ public interface Dao<T> {
 	
 	void delete(User user) throws DatabaseException;
 	
-	void find(long id) throws DatabaseException;
+	User find(long id) throws DatabaseException;
 	
 	Collection<T> findAll() throws DatabaseException;
 
