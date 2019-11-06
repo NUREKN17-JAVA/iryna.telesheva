@@ -13,7 +13,19 @@ public class User implements Serializable {
     private Date dateOfBirth;
 
 
-    public static long getSerialversionuid() {
+    public User(long l, String testFirstName, String testLastName, Date testDateOfBirth) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public User(Object object, String firstName2, String lastName2, Date testDateOfBirth) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
