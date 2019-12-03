@@ -2,6 +2,7 @@ package ua.nure.kn.telesheva.gui;
 
 import java.awt.Component;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -14,28 +15,32 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.mockobjects.dynamic.Mock;
+
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.eventdata.StringEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
 import ua.nure.kn.telesheva.db.DaoFactory;
-import ua.nure.kn.telesheva.db.DaoFactoryImpl;
+import ua.nure.kn.telesheva.db.MockDaoFactory;
 import ua.nure.kn.telesheva.db.MockUserDao;
 
 class MainFrameTest extends JFCTestCase {
 
 	private MainFrame mainFrame;
 
+	private Mock mockUserDao;
+	
 	@BeforeEach
 	protected void setUp() throws Exception {
 		super.setUp();
 		
 		Properties properties = new Properties();
-		properties.setProperty("ua.nure.kn.telesheva.db.Dao", MockUserDao.class.getName());
-		properties.setProperty("dao.factory", DaoFactoryImpl.class.getName());
-		DaoFactory.getInstance().init(properties);
-		
+		properties.setProperty("dao.factory", MockDaoFactory.class.getName());
+		DaoFactory.init(properties);
+		mockUserDao = ((MockDaoFactory) DaoFactory.getInstance()).getMockUserDao();
+		mockUserDao.expectAndReturn("findAll", new ArrayList());
 		setHelper(new JFCTestHelper());
 		mainFrame = new MainFrame();
 		mainFrame.setVisible(true);
@@ -43,9 +48,14 @@ class MainFrameTest extends JFCTestCase {
 
 	@AfterEach
 	protected void tearDown() throws Exception {
-		mainFrame.setVisible(false);
-		getHelper().cleanUp(this);
-		super.tearDown();
+		try {
+			mockUserDao.verify();
+			mainFrame.setVisible(false);
+			getHelper().cleanUp(this);
+			super.tearDown();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private Component find(Class componentClass, String name) {
