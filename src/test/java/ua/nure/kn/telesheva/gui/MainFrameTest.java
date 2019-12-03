@@ -25,6 +25,7 @@ import junit.extensions.jfcunit.finder.NamedComponentFinder;
 import ua.nure.kn.telesheva.db.DaoFactory;
 import ua.nure.kn.telesheva.db.MockDaoFactory;
 import ua.nure.kn.telesheva.db.MockUserDao;
+import ua.nure.kn.telesheva.usermanagement.User;
 
 class MainFrameTest extends JFCTestCase {
 
@@ -82,6 +83,20 @@ class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testAddUser() {
+		try {
+		String firstName = "Ivan";
+		String lastName = "Petrov";
+		Date now = new Date();
+		
+		User user = new User(firstName, lastName, now);
+		
+		User expectedUser = new User (new Long(1), firstName, lastName, now);
+		mockUserDao.expectAndReturn("create", expectedUser);
+		
+		ArrayList users = new ArrayList();
+		users.add(expectedUser);
+		mockUserDao.expectAndReturn("findAll", users);
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		assertEquals(0,  table.getRowCount());
 		
@@ -96,10 +111,10 @@ class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 		find(JButton.class, "cancelButton");
 		
-		getHelper().sendString(new StringEventData(this, firstNameField, "Ivan"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Petrov"));
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));
 		DateFormat formatter = DateFormat.getDateInstance();
-		String date = formatter.format(new Date());
+		String date = formatter.format(now);
 		getHelper().sendString(new StringEventData(this, dateofBirthField, date));
 
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
@@ -107,7 +122,9 @@ class MainFrameTest extends JFCTestCase {
 		find(JPanel.class, "browsePanel");
 		table = (JTable) find(JTable.class, "userTable");
 		assertEquals(1,  table.getRowCount());
-
+		} catch (Exception e) {
+			fail(e.toString());
+		}
 	}
 	
 
