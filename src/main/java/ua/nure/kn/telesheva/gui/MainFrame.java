@@ -7,6 +7,8 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ua.nure.kn.telesheva.db.Dao;
+import ua.nure.kn.telesheva.db.DaoFactory;
 import ua.nure.kn.telesheva.usermanagement.util.Messages;
 
 public class MainFrame extends JFrame {
@@ -16,10 +18,16 @@ public class MainFrame extends JFrame {
 	private JPanel contentPanel;
 	private JPanel browsePanel;
 	private AddPanel addPanel;
+	private Dao dao;
 
-	public MainFrame() {
+	public MainFrame() throws ReflectiveOperationException {
 		super();
+		dao = DaoFactory.getInstance().getUserDao();
 		initialize();
+	}
+	
+	public Dao getDao() {
+		return dao;
 	}
 	
 	private void initialize() {
@@ -38,14 +46,15 @@ public class MainFrame extends JFrame {
 		return contentPanel;
 	}
 
-	private JPanel getBrowsePanel() {
+	JPanel getBrowsePanel() {
 		if (browsePanel == null) {
 			browsePanel = new BrowsePanel(this);
 		}
+		((BrowsePanel) browsePanel).initTable();
 		return browsePanel;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ReflectiveOperationException {
 		MainFrame frame = new MainFrame();
 		frame.setVisible(true);
 	}
