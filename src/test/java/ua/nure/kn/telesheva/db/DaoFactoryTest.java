@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import junit.framework.TestCase;
 
 class DaoFactoryTest extends TestCase {
-
+	
 	@BeforeEach
 	protected
 	void setUp() throws Exception {
