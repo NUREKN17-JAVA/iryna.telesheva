@@ -2,6 +2,8 @@ package ua.nure.kn.telesheva.db;
 
 import java.util.Collection;
 
+import ua.nure.kn.telesheva.usermanagement.User;
+
 public interface Dao<T> {
 	    T create(T entity) throws DatabaseException;
 
@@ -14,4 +16,5 @@ public interface Dao<T> {
 	    Collection<T> findAll() throws DatabaseException;
 
 	    void setConnectionFactory(ConnectionFactory connectionFactory);
+
 }
