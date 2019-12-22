@@ -65,7 +65,7 @@ public class EditServlet extends HttpServlet {
 		}
 	}
 	
-	protected User getUser(HttpServletRequest req) throws ValidationException, java.text.ParseException {
+	private User getUser(HttpServletRequest req) throws ValidationException, java.text.ParseException {
 		User user = new User();
 		String idStr = req.getParameter("id");
 		String firstName = req.getParameter("firstName");
