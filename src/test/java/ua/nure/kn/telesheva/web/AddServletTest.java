@@ -8,90 +8,84 @@ import org.junit.jupiter.api.Test;
 
 import ua.nure.kn.telesheva.usermanagement.User;
 
-class EditServletTest extends MockServletTestCase {
+class AddServletTest extends MockServletTestCase {
 	
-	private static final String ERROR_ATTRIBUTE = "error";
 	private static final String OK_BUTTON = "Ok";
 	private static final String OK_BUTTON_PARAMETER = "okButton";
 	private static final String DATE_PARAMETER = "date";
 	private static final String LAST_NAME_PARAMETER = "lastName";
 	private static final String FIRST_NAME_PARAMETER = "firstName";
-	private static final String ID_VALUE = "1000";
-	private static final String ID_PARAMETER = "id";
-	private static final String UPDATE_QUERY = "update";
+	private static final String CREATE_QUERY = "create";
 	private static final String LAST_NAME = "Doe";
 	private static final String FIRST_NAME = "John";
 
 	@BeforeEach
 	protected void setUp() throws Exception {
 		super.setUp();
-		createServlet(EditServlet.class);
+		createServlet(AddServlet.class);
 	}
 	
-	public void testEdit() {
+	public void testAdd() {
 		Date date = new Date();
-		User user = new User(new Long(1000), "John", "Doe", date);
+		User newUser = new User(FIRST_NAME, LAST_NAME, new Date());
+		User user = new User(new Long(1000), FIRST_NAME, LAST_NAME, new Date());
+		getMockUserDao().expectAndReturn(CREATE_QUERY, newUser, user);
 		
-		addRequestParameter("id", ID_VALUE);
-		addRequestParameter("firstName", FIRST_NAME);
-		addRequestParameter("lastName", LAST_NAME);
-		addRequestParameter("date", DateFormat.getInstance().format(date));
-		addRequestParameter("okButton", "Ok");
-		doPost();
-	}
-	
-	public void testEditEmptyFirstName() {
-		Date date = new Date();
-		addRequestParameter(ID_PARAMETER, ID_VALUE);
+		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
 		addRequestParameter(DATE_PARAMETER, DateFormat.getInstance().format(date));
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
-		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute(ERROR_ATTRIBUTE);
+	}
+	
+	public void testAddEmptyFirstName() {
+		Date date = new Date();
+		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
+		addRequestParameter(DATE_PARAMETER, DateFormat.getInstance().format(date));
+		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
+		doPost();
+		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute("error");
 		assertNotNull("Could not find error message in session scope", errorMessage);
 	}
 	
-	public void testEditEmptyLastName() {
+	public void testAddEmptyLastName() {
 		Date date = new Date();
-		addRequestParameter(ID_PARAMETER, ID_VALUE);
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(DATE_PARAMETER, DateFormat.getInstance().format(date));
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
-		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute(ERROR_ATTRIBUTE);
+		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute("error");
 		assertNotNull("Could not find error message in session scope", errorMessage);
 	}
 	
-	public void testEditEmptyDate() {
+	public void testAddEmptyDate() {
 		Date date = new Date();
-		addRequestParameter(ID_PARAMETER, ID_VALUE);
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
-		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute(ERROR_ATTRIBUTE);
+		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute("error");
 		assertNotNull("Could not find error message in session scope", errorMessage);
 	}
 	
-	public void testEditEmptyDateIncorrect() {
+	public void testAddDateIncorrect() {
 		Date date = new Date();
-		addRequestParameter(ID_PARAMETER, ID_VALUE);
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
 		addRequestParameter(DATE_PARAMETER, "lkjghdsfkhdfkjghfdl");
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
-		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute(ERROR_ATTRIBUTE);
+		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute("error");
 		assertNotNull("Could not find error message in session scope", errorMessage);
 	}
 
 	@Test
 	void test() {
-		testEdit();
-		testEditEmptyFirstName();
-		testEditEmptyLastName();
-		testEditEmptyDate();
-		testEditEmptyDateIncorrect();
+		testAdd();
+		testAddEmptyFirstName();
+		testAddEmptyLastName();
+		testAddEmptyDate();
+		testAddDateIncorrect();
 	}
 
 }
