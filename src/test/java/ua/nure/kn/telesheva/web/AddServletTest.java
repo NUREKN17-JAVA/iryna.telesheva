@@ -15,10 +15,9 @@ class AddServletTest extends MockServletTestCase {
 	private static final String DATE_PARAMETER = "date";
 	private static final String LAST_NAME_PARAMETER = "lastName";
 	private static final String FIRST_NAME_PARAMETER = "firstName";
-	private static final String CREATE_QUERY = "create";
-	private static final String LAST_NAME = "Doe";
 	private static final String FIRST_NAME = "John";
-
+	private static final String LAST_NAME = "Doe";
+	
 	@BeforeEach
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -29,7 +28,7 @@ class AddServletTest extends MockServletTestCase {
 		Date date = new Date();
 		User newUser = new User(FIRST_NAME, LAST_NAME, new Date());
 		User user = new User(new Long(1000), FIRST_NAME, LAST_NAME, new Date());
-		getMockUserDao().expectAndReturn(CREATE_QUERY, newUser, user);
+		getMockUserDao().expectAndReturn("create", newUser, user);
 		
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
@@ -72,7 +71,7 @@ class AddServletTest extends MockServletTestCase {
 		Date date = new Date();
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
-		addRequestParameter(DATE_PARAMETER, "lkjghdsfkhdfkjghfdl");
+		addRequestParameter(DATE_PARAMETER, "fgbede");
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
 		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute("error");

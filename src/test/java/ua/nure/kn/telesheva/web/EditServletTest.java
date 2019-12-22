@@ -18,9 +18,8 @@ class EditServletTest extends MockServletTestCase {
 	private static final String FIRST_NAME_PARAMETER = "firstName";
 	private static final String ID_VALUE = "1000";
 	private static final String ID_PARAMETER = "id";
-	private static final String UPDATE_QUERY = "update";
+	private static final String FIRST_NAME = "John";	
 	private static final String LAST_NAME = "Doe";
-	private static final String FIRST_NAME = "John";
 
 	@BeforeEach
 	protected void setUp() throws Exception {
@@ -32,11 +31,11 @@ class EditServletTest extends MockServletTestCase {
 		Date date = new Date();
 		User user = new User(new Long(1000), "John", "Doe", date);
 		
-		addRequestParameter("id", ID_VALUE);
-		addRequestParameter("firstName", FIRST_NAME);
-		addRequestParameter("lastName", LAST_NAME);
-		addRequestParameter("date", DateFormat.getInstance().format(date));
-		addRequestParameter("okButton", "Ok");
+		addRequestParameter(ID_PARAMETER, ID_VALUE);
+		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
+		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
+		addRequestParameter(DATE_PARAMETER, DateFormat.getInstance().format(date));
+		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
 	}
 	
@@ -78,7 +77,7 @@ class EditServletTest extends MockServletTestCase {
 		addRequestParameter(ID_PARAMETER, ID_VALUE);
 		addRequestParameter(FIRST_NAME_PARAMETER, FIRST_NAME);
 		addRequestParameter(LAST_NAME_PARAMETER, LAST_NAME);
-		addRequestParameter(DATE_PARAMETER, "lkjghdsfkhdfkjghfdl");
+		addRequestParameter(DATE_PARAMETER, "ngfngf");
 		addRequestParameter(OK_BUTTON_PARAMETER, OK_BUTTON);
 		doPost();
 		String errorMessage = (String)getWebMockObjectFactory().getMockRequest().getAttribute(ERROR_ATTRIBUTE);
