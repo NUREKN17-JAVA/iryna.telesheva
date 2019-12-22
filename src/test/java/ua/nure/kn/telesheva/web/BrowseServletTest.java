@@ -42,6 +42,7 @@ class BrowseServletTest extends MockServletTestCase {
 	@Test
 	void test() {
 		testBrowse();
+		testEdit();
 	}
 	
 

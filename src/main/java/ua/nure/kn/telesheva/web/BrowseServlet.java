@@ -88,7 +88,15 @@ public class BrowseServlet extends HttpServlet {
 	}
 
 	private void add(HttpServletRequest req, HttpServletResponse resp) {
-		req.getRequestDispatcher("/add").forward(req, resp);
+		try {
+			req.getRequestDispatcher("/add").forward(req, resp);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void browse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -97,13 +105,11 @@ public class BrowseServlet extends HttpServlet {
 			try {
 				users = DaoFactory.getInstance().getUserDao().findAll();
 			} catch (ReflectiveOperationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			req.getSession().setAttribute("users", users);
 			req.getRequestDispatcher("/browse.jsp").forward(req, resp);
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
 			throw new ServletException(e);
 		}
 	}
