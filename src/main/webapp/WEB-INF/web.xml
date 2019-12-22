@@ -10,9 +10,49 @@
 	<servlet-class>ua.nure.kn.telesheva.web.BrowseServlet</servlet-class>
 	</servlet>
 	
+	<servlet>
+	<servlet-name>Add Servlet</servlet-name>
+	<servlet-class>ua.nure.kn.telesheva.web.AddServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Edit Servlet</servlet-name>
+	<servlet-class>ua.nure.kn.telesheva.web.EditServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Delete Servlet</servlet-name>
+	<servlet-class>ua.nure.kn.telesheva.web.DeleteServlet</servlet-class>
+	</servlet>
+	
+    <servlet>
+	<servlet-name>Details Servlet</servlet-name>
+	<servlet-class>ua.nure.kn.telesheva.web.DetailsServlet</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
 	<servlet-name>Browse Servlet</servlet-name>
 	<url-pattern>/browse</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Add Servlet</servlet-name>
+	<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Edit Servlet</servlet-name>
+	<url-pattern>/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Delete Servlet</servlet-name>
+	<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Details Servlet</servlet-name>
+	<url-pattern>/details</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
