@@ -110,7 +110,7 @@ public class User implements Serializable {
 	}
 
 	public int hashCode() {
-		if(this.getId() == null) {
+		if (this.getId() == null) {
 			return 0;
 		}
 		return this.getId().hashCode();
