@@ -17,7 +17,7 @@ public class SearchRequestBehaviour extends Behaviour {
 		this.lastName = lastName;
 	}
 
-	
+
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub

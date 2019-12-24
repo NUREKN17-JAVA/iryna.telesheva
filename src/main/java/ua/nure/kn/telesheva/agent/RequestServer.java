@@ -48,7 +48,6 @@ public class RequestServer extends CyclicBehaviour {
 	}
 
 	private ACLMessage createReply(ACLMessage message) throws ReflectiveOperationException {
-		// TODO Auto-generated method stub
 		ACLMessage reply = message.createReply();
 		
 		String content = message.getContent();
