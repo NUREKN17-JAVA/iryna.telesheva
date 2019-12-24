@@ -20,7 +20,11 @@ public class RequestServer extends CyclicBehaviour {
 		ACLMessage message = myAgent.receive();
 		if (message != null) {
 			if (message.getPerformative() == ACLMessage.REQUEST) {
-				myAgent.send(createReply(message));
+				try {
+					myAgent.send(createReply(message));
+				} catch (ReflectiveOperationException e) {
+					e.printStackTrace();
+				}
 			} else {
 				Collection users = parseMessage(message);
 				((SearchAgent) myAgent).showUsers(users);

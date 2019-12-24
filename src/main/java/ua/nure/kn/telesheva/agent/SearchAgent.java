@@ -88,7 +88,7 @@ public class SearchAgent extends Agent {
 		}
 	}
 
-	private void showUsers(Collection users) {
+	public void showUsers(Collection users) {
 		gui.addUsers(users);
 	}
 
