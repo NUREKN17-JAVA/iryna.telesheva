@@ -46,4 +46,27 @@ public class MockUserDao implements Dao {
 		
 	}
 
+	@Override
+	public Object create(Object entity) throws DatabaseException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Object entity) throws DatabaseException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Object entity) throws DatabaseException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection find(String firstName, String lastName) throws DatabaseException {
+		throw new UnsupportedOperationException();
+	}
+
 }

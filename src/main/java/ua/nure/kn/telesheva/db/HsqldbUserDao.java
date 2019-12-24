@@ -22,6 +22,7 @@ class HsqldbUserDao implements Dao<User> {
     private final String DELETE_USER = "DELETE FROM USERS WHERE id = ?";
     private final String UPDATE_USER
             = "UPDATE USERS SET firstname = ?, lastname = ?, dateofbirth = ? WHERE id = ?";
+    private static final String SELECT_BY_NAMES = "SELECT id, firstname, lastname, dateofbirth FROM users WHERE firstname = ? AND lastname = ?";
 
 	public HsqldbUserDao() {
 	}
@@ -159,6 +160,34 @@ class HsqldbUserDao implements Dao<User> {
 	@Override
 	public void setConnectionFactory(ConnectionFactory connectionFactory) {
 		 this.connectionFactory = connectionFactory; 
+	}
+
+	@Override
+	public Collection<User> find(String firstName, String lastName) throws DatabaseException {
+		Collection result = new LinkedList();
+		try {
+			Connection connection = connectionFactory.getConnection();
+			PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAMES);
+			statement.setString(1, firstName);
+			statement.setString(2, lastName);
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				User user = new User();
+				user.setId(new Long(resultSet.getLong(1)));
+				user.setFirstName(resultSet.getString(2));
+				user.setLastName(resultSet.getString(3));
+				user.setDateOfBirth(resultSet.getDate(4));
+				result.add(user);
+			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			throw e;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DatabaseException(e);
+		}
+		
+		return result;
 	}
 	
 }
